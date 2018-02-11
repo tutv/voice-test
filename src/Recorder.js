@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {ReactMic} from 'react-mic';
-import {Button} from "antd";
 
 class Recorder extends Component {
     constructor(props) {
@@ -34,20 +33,36 @@ class Recorder extends Component {
         const {audio} = this.state;
 
         return (
-            <div>
-                <ReactMic
-                    record={this.state.record}
-                    className="sound-wave"
-                    onStop={this.onStop}
-                    strokeColor="#000000"
-                    backgroundColor="#FF4081"/>
-                <Button onClick={this.startRecording}>Start</Button>
-                <Button onClick={this.stopRecording}>Stop</Button>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-6">
+                        <h2>Demo recorder</h2>
 
-                {
-                    !!audio &&
-                    <audio controls src={audio}/>
-                }
+                        <ReactMic
+                            record={this.state.record}
+                            className="sound-wave"
+                            onStop={this.onStop}
+                            strokeColor="#000000"
+                            backgroundColor="#FF4081"/>
+                    </div>
+                </div>
+
+                <div className="row justify-content-center">
+                    <div className="col-6" style={{marginBottom: '20px'}}>
+                        <button className="btn btn-primary" type="primary" onClick={this.startRecording}>Start</button>
+                        {' '}
+                        <button className="btn btn-danger" onClick={this.stopRecording}>Stop</button>
+                    </div>
+                </div>
+
+                <div className="row justify-content-center">
+                    <div className="col-6">
+                        {
+                            !!audio &&
+                            <audio controls src={audio}/>
+                        }
+                    </div>
+                </div>
             </div>
         );
     }
