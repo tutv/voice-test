@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ReactMic} from 'react-mic';
+import MediaStreamRecorder from 'msr';
 
 class Recorder extends Component {
     constructor(props) {
@@ -12,21 +12,29 @@ class Recorder extends Component {
     }
 
     startRecording = () => {
-        this.setState({
-            record: true
-        });
-    };
+        const mediaConstraints = {
+            audio: true
+        };
 
-    stopRecording = () => {
-        this.setState({
-            record: false
-        });
-    };
+        navigator.getUserMedia(mediaConstraints, (stream) => {
+            const mediaRecorder = new MediaStreamRecorder(stream);
 
-    onStop = (recordedBlob) => {
-        this.setState({
-            audio: recordedBlob.blobURL
-        });
+            mediaRecorder.mimeType = 'audio/wav';
+            mediaRecorder.ondataavailable = (blob) => {
+                const blobURL = URL.createObjectURL(blob);
+
+                console.log(blobURL);
+
+                this.setState({
+                    audio: blobURL
+                });
+            };
+            mediaRecorder.start();
+
+            setTimeout(() => {
+                mediaRecorder.stop();
+            }, 3000);
+        }, error => console.error(error));
     };
 
     render() {
@@ -37,21 +45,12 @@ class Recorder extends Component {
                 <div className="row justify-content-center">
                     <div className="col-6">
                         <h2>Demo recorder</h2>
-
-                        <ReactMic
-                            record={this.state.record}
-                            className="sound-wave"
-                            onStop={this.onStop}
-                            strokeColor="#000000"
-                            backgroundColor="#FF4081"/>
                     </div>
                 </div>
 
                 <div className="row justify-content-center">
                     <div className="col-6" style={{marginBottom: '20px'}}>
                         <button className="btn btn-primary" type="primary" onClick={this.startRecording}>Start</button>
-                        {' '}
-                        <button className="btn btn-danger" onClick={this.stopRecording}>Stop</button>
                     </div>
                 </div>
 
