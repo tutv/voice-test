@@ -60,6 +60,8 @@ class Recorder extends Component {
                             !!audio &&
                             <audio controls src={audio}/>
                         }
+
+                        {audio}
                     </div>
                 </div>
             </div>
