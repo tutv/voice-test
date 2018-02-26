@@ -19,7 +19,7 @@ class Recorder extends Component {
         navigator.getUserMedia(mediaConstraints, (stream) => {
             const mediaRecorder = new MediaStreamRecorder(stream);
 
-            mediaRecorder.mimeType = 'audio/wav';
+            mediaRecorder.mimeType = 'audio/ogg';
             mediaRecorder.ondataavailable = (blob) => {
                 const blobURL = URL.createObjectURL(blob);
 
